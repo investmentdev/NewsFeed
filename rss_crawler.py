@@ -298,6 +298,7 @@ for category, articles in category_articles.items():
     html_content += f'<div class="category">'
     html_content += f'<div class="category-title">{category}</div>'
     for article in articles:
+        print(article["desc"])
         image_url = article.get("image")
         html_content += '<div class="article">'
         if image_url:
