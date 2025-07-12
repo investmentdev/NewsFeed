@@ -70,7 +70,9 @@ feeds = {
         "باشگاه خبرنگاران": "https://www.yjc.ir/fa/rss/9",
         "(سیاسی) تسنیم": "https://www.tasnimnews.com/fa/rss/feed/0/7/1/%D8%B3%DB%8C%D8%A7%D8%B3%DB%8C",
         "اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/11",
-        "(سیاسی) باشگاه خبرنگاران": "https://www.yjc.ir/fa/rss/3"
+        "(سیاسی) باشگاه خبرنگاران": "https://www.yjc.ir/fa/rss/3",
+        "همشهری":"https://www.hamshahrionline.ir/rss/tp/6",
+        "همشهری (بین‌المللی)":"https://www.hamshahrionline.ir/rss/tp/11"
     }
 }
 
