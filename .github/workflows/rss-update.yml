@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install requests beautifulsoup4 python-dateutil jdatetime
+        pip install requests beautifulsoup4 python-dateutil jdatetime lxml
 
     - name: Run RSS crawler
       run: python rss_crawler.py
