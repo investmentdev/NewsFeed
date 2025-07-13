@@ -11,7 +11,7 @@ import time
 def fetch_rss_content(url):
     response = requests.get(url, timeout=10)
     return response.content
-print("update 1")
+
 # --- Mappings ---
 PERSIAN_WEEKDAYS = {
     "Saturday": "شنبه",
@@ -47,32 +47,43 @@ def to_persian_digits(s):
 feeds = {
     "اقتصاد": {
         "تسنیم": "https://www.tasnimnews.com/fa/rss/feed/0/7/7/%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF%DB%8C",
-        "اقتصاد نیوز": "https://www.eghtesadnews.com/feeds/",
         "اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/8",
         "باشگاه خبرنگاران": "https://www.yjc.ir/fa/rss/6",
-        "دنیای اقتصاد": "https://donya-e-eqtesad.com/feeds/",
-        "ایرنا": "https://www.irna.ir/rss/tp/27"
+        "ایرنا": "https://www.irna.ir/rss/tp/20",
+        "ایسنا": "https://www.isna.ir/rss/tp/34",
+        "جام جم": "https://jamejamonline.ir/fa/rss/15",
+        "جوان": "https://www.javanonline.ir/fa/rss/6",
+        "همشهری": "https://www.hamshahrionline.ir/rss/tp/10"
     },
     "بورس، بانک و بیمه": {
         "(بورس) ایرنا": "https://www.irna.ir/rss/tp/1001669",
         "(بورس) اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/9",
         "بورس پرس": "https://boursepress.ir/rss/feeds/featured",
         "(بانک و بیمه) ایرنا": "https://www.irna.ir/rss/tp/26",
-        "(بانک و بیمه) اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/25"
+        "(بانک و بیمه) اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/25",
+        "(بورس) همشهری": "https://www.hamshahrionline.ir/rss/tp/683",
+        "(بانک و بیمه) همشهری": "https://www.hamshahrionline.ir/rss/tp/92"
     },
     "صنعت، معدن و تجارت": {
         "ایرنا": "https://www.irna.ir/rss/tp/23",
-        "اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/26"
+        "اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/26",
+        "ایسنا": "https://www.isna.ir/rss/tp/74",
+        "همشهری": "https://www.hamshahrionline.ir/rss/tp/87"
     },
-    "جهانی و سیاسی": {
-        "ایرنا": "https://www.irna.ir/rss/tp/1",
-        "تسنیم": "https://www.tasnimnews.com/fa/rss/feed/0/7/8/%D8%A8%DB%8C%D9%86-%D8%A7%D9%84%D9%85%D9%84%D9%84",
-        "باشگاه خبرنگاران": "https://www.yjc.ir/fa/rss/9",
+    "سیاسی و اجتماعی": {
+        "(جهانی) ایرنا": "https://www.irna.ir/rss/tp/1",
+        "(بین‌الملل) تسنیم": "https://www.tasnimnews.com/fa/rss/feed/0/7/8/%D8%A8%DB%8C%D9%86-%D8%A7%D9%84%D9%85%D9%84%D9%84",
+        "(جهانی) باشگاه خبرنگاران": "https://www.yjc.ir/fa/rss/9",
         "(سیاسی) تسنیم": "https://www.tasnimnews.com/fa/rss/feed/0/7/1/%D8%B3%DB%8C%D8%A7%D8%B3%DB%8C",
-        "اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/11",
+        "(سیاسی) اقتصاد آنلاین": "https://www.eghtesadonline.com/fa/rss/11",
         "(سیاسی) باشگاه خبرنگاران": "https://www.yjc.ir/fa/rss/3",
-        "همشهری":"https://www.hamshahrionline.ir/rss/tp/6",
-        "همشهری (بین‌المللی)":"https://www.hamshahrionline.ir/rss/tp/11"
+        "(سیاسی) همشهری": "https://www.hamshahrionline.ir/rss/tp/6",
+        "(بین‌المللی) همشهری": "https://www.hamshahrionline.ir/rss/tp/11",
+        "(سیاسی) جام جم": "https://jamejamonline.ir/fa/rss/17",
+        "(جهانی) جام جم": "https://jamejamonline.ir/fa/rss/12",
+        "(سیاسی) جوان": "https://www.javanonline.ir/fa/rss/3",
+        "(جهانی) جوان": "https://www.javanonline.ir/fa/rss/2",
+        "(جهانی) ایسنا": "https://www.isna.ir/rss/tp/17"
     }
 }
 
@@ -194,49 +205,77 @@ for articles in category_articles.values():
             return datetime.min
     articles.sort(key=parse_datetime, reverse=True)
 
+# --- Generate Persian update time ---
+now_tehran = datetime.now(ZoneInfo("Asia/Tehran"))
+now_jalali = jdatetime.datetime.fromgregorian(datetime=now_tehran)
+
+weekday_fa = PERSIAN_WEEKDAYS.get(now_jalali.strftime('%A'), now_jalali.strftime('%A'))
+day = to_persian_digits(now_jalali.strftime('%d'))
+month_en = now_jalali.strftime('%B')
+month_fa = PERSIAN_MONTHS.get(month_en, month_en)
+year = to_persian_digits(now_jalali.strftime('%Y'))
+time_str = to_persian_digits(now_jalali.strftime('%H:%M'))
+
+last_updated_html = f"""
+<div style="text-align:center; font-size: 16px; color: #666; margin-bottom: 16px;">
+    بروزرسانی اخیر: {weekday_fa}، {day} {month_fa} {year} ⏰ {time_str}
+</div>
+"""
+
+
 output_path = "index.html"
 
 
-html_content = """
+html_content = f"""
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>اخبار اقتصادی</title>
+    <title>اخبار گزیده روز</title>
     <style>
-        body {
+        html, body {{
+            height: 100%%;
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', sans-serif;
             background: #f2f2f2;
-            margin: 0;
-            padding: 20px;
             direction: rtl;
-        }
-    
-        h1 {
+            overflow: hidden; /* prevent outer scrolling */
+        }}
+
+        h1 {{
             text-align: center;
             color: #003366;
             font-size: 32px;
             margin-bottom: 40px;
-        }
+        }}
+
+        .container {{
+            padding-left: 30px;
+            padding-right: 30px;
+            box-sizing: border-box;
+            height: 100%%; /* match full height for internal layout */
+        }}
     
-        .grid {
+        .grid {{
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Always 4 columns */
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
-        }
+            height: calc(100vh - 200px); /* 100vh minus header + margin */
+            overflow: hidden; /* prevent scroll of entire grid */
+        }}
     
-        .category {
+        .category {{
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            overflow-y: auto;
-            max-height: 85vh;
             display: flex;
             flex-direction: column;
             position: relative;
-        }
+            overflow-y: auto;
+        }}
     
-        .category-title {
+        .category-title {{
             background-color: #003366;
             color: white;
             font-size: 22px;
@@ -247,58 +286,76 @@ html_content = """
             top: 0;
             z-index: 10;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+        }}
     
-        .article {
+        .article {{
             border-bottom: 1px solid #ddd;
             padding: 14px 10px;
             background-color: #fafafa;
             border-radius: 4px;
             margin: 10px;
-        }
+        }}
     
-        .article img {
-            width: 100%;
+        .article img {{
+            width: 100%%;
             max-height: 160px;
             object-fit: cover;
             border-radius: 5px;
             margin-bottom: 10px;
-        }
+        }}
     
-        .title {
+        .title {{
             font-size: 18px;
             font-weight: 700;
             color: #0056b3;
             text-decoration: none;
             display: block;
             margin-bottom: 8px;
-        }
+        }}
     
-        .desc {
+        .desc {{
             font-size: 14px;
             color: #333;
             margin-bottom: 6px;
             line-height: 1.6;
-        }
+        }}
     
-        .date, .source {
+        .date, .source {{
             font-size: 12px;
             color: #777;
             margin-top: 4px;
-        }
+        }}
     </style>
-
 </head>
 <body>
-<h1>گزیده اخبار</h1>
-<div class="grid">
+<div class="container">
+    <h1>گزیده اخبار</h1>
+    {last_updated_html}
+    <div style="text-align: center; margin-bottom: 30px;">
+        <a href="https://www.pishkhan.com/all" target="_blank" style="
+            background-color: #0056b3;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        " onmouseover="this.style.backgroundColor='#003f7f'" onmouseout="this.style.backgroundColor='#0056b3'">
+            📰 صفحه اول روزنامه‌های امروز
+        </a>
+    </div>
+    <div class="grid">
 """
+
+
 
 for category, articles in category_articles.items():
     html_content += f'<div class="category">'
     html_content += f'<div class="category-title">{category}</div>'
     for article in articles:
-        print(article["desc"])
         image_url = article.get("image")
         html_content += '<div class="article">'
         if image_url:
@@ -310,8 +367,10 @@ for category, articles in category_articles.items():
         html_content += '</div>'
     html_content += '</div>'
 
+
 html_content += """
-</div>
+    </div> <!-- end of .grid -->
+</div> <!-- end of .container -->
 </body>
 </html>
 """
