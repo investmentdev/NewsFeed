@@ -11,7 +11,7 @@ import time
 def fetch_rss_content(url):
     response = requests.get(url, timeout=10)
     return response.content
-
+print("update 2")
 # --- Mappings ---
 PERSIAN_WEEKDAYS = {
     "Saturday": "شنبه",
