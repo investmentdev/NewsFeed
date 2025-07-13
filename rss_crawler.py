@@ -234,13 +234,13 @@ html_content = f"""
     <title>اخبار گزیده روز</title>
     <style>
         html, body {{
-            height: 100%%;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', sans-serif;
             background: #f2f2f2;
             direction: rtl;
-            overflow: hidden; /* prevent outer scrolling */
+            overflow-x: hidden; 
+            overflow-y: auto;    
         }}
 
         h1 {{
@@ -253,6 +253,7 @@ html_content = f"""
         .container {{
             padding-left: 30px;
             padding-right: 30px;
+            padding-bottom: 40px;
             box-sizing: border-box;
             height: 100%%; /* match full height for internal layout */
         }}
@@ -261,8 +262,8 @@ html_content = f"""
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 24px;
-            height: calc(100vh - 200px); /* 100vh minus header + margin */
-            overflow: hidden; /* prevent scroll of entire grid */
+            height: calc(100vh - 200px); 
+            overflow: hidden; 
         }}
     
         .category {{
@@ -331,7 +332,7 @@ html_content = f"""
 <div class="container">
     <h1>گزیده اخبار</h1>
     {last_updated_html}
-    <div style="text-align: center; margin-bottom: 30px;">
+    <div style="font-weight: bold; text-align: center; margin-bottom: 26px;">
         <a href="https://www.pishkhan.com/all" target="_blank" style="
             background-color: #0056b3;
             color: white;
@@ -349,7 +350,6 @@ html_content = f"""
     </div>
     <div class="grid">
 """
-
 
 
 for category, articles in category_articles.items():
@@ -370,6 +370,12 @@ for category, articles in category_articles.items():
 
 html_content += """
     </div> <!-- end of .grid -->
+    <div style="margin-top: 40px; padding: 20px; background-color: #fff; border-top: 1px solid #ccc; border-radius: 10px; box-shadow: 0 -2px 8px rgba(0,0,0,0.05); font-size: 15px; color: #444; line-height: 1.8;">
+    <p style="margin: 0; text-align: justify;">
+        این صفحه گزیده‌ای از آخرین اخبار منتشرشده توسط منابع خبری معتبر ایرانی است و به‌صورت دسته‌بندی‌شده نمایش داده می‌شود. اطلاعات حدودا هر ۳۰ دقیقه یک‌بار به‌روزرسانی می‌شود و
+        منابعی مانند <strong>تسنیم</strong>، <strong>ایسنا</strong>، <strong>ایرنا</strong>، <strong>اقتصاد آنلاین</strong>، <strong>همشهری</strong> و <strong>باشگاه خبرنگاران جوان</strong> از جمله خبرگزاری‌هایی هستند که مطالب آن‌ها در این صفحه نمایش داده می‌شود.
+    </p>
+</div>
 </div> <!-- end of .container -->
 </body>
 </html>
