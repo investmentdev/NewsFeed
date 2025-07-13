@@ -222,9 +222,7 @@ last_updated_html = f"""
 </div>
 """
 
-
-output_path = "index.html"
-
+output_path = "desktop.html"
 
 html_content = f"""
 <!DOCTYPE html>
@@ -384,4 +382,172 @@ html_content += """
 with open(output_path, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print("✅ Done...")
+print("✅ desktop version...")
+
+# -------------------------------------------------------------------------------------------------------------------------------- #
+
+output_path = "mobile.html"
+
+html_content = f"""
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>اخبار گزیده روز</title>
+    <style>
+        html, body {{
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f8;
+            direction: rtl;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }}
+
+        h1 {{
+            text-align: center;
+            color: #1a237e;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 20px 0 10px;
+        }}
+
+        .container {{
+            padding: 0 20px 30px;
+            box-sizing: border-box;
+        }}
+
+        .grid {{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            height: calc(80vh - 150px);
+            overflow: hidden;
+        }}
+
+        .category {{
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }}
+
+        .category-title {{
+            background-color: #1a237e;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }}
+
+        .article {{
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px;
+            background-color: #fdfdfd;
+            border-radius: 6px;
+            margin: 8px;
+        }}
+
+        .article img {{
+            width: 100%;
+            max-height: 140px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }}
+
+        .title {{
+            font-size: 16px;
+            font-weight: 700;
+            color: #0d47a1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 6px;
+        }}
+
+        .desc {{
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }}
+
+        .date, .source {{
+            font-size: 11px;
+            color: #757575;
+        }}
+
+        .top-button {{
+            font-size: 16px;
+            padding: 10px 24px;
+            border-radius: 8px;
+            background-color: #3949ab;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }}
+
+        .top-button:hover {{
+            background-color: #2c387e;
+        }}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>گزیده اخبار</h1>
+    <div style="font-size: 13px; color: #666; text-align: center; margin-bottom: 12px;">
+        {last_updated_html}
+    </div>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="https://www.pishkhan.com/all" target="_blank" class="top-button">
+            📰 صفحه اول روزنامه‌های امروز
+        </a>
+    </div>
+    <div class="grid">
+"""
+
+# Append articles by category...
+
+for category, articles in category_articles.items():
+    html_content += f'<div class="category">'
+    html_content += f'<div class="category-title">{category}</div>'
+    for article in articles:
+        image_url = article.get("image")
+        html_content += '<div class="article">'
+        if image_url:
+            html_content += f'<img src="{image_url}" alt="تصویر">'
+        html_content += f'<a class="title" href="{article["link"]}" target="_blank">{article["title"]}</a>'
+        html_content += f'<div class="date">{article["date"]}</div>'
+        html_content += f'<div class="source">📌 {article["source"]}</div>'
+        html_content += '</div>'
+    html_content += '</div>'
+
+
+html_content += """
+    </div> <!-- end of .grid -->
+    <div style="margin-top: 40px; padding: 20px; background-color: #fff; border-top: 1px solid #ccc; border-radius: 10px; box-shadow: 0 -2px 8px rgba(0,0,0,0.05); font-size: 15px; color: #444; line-height: 1.8;">
+    <p style="margin: 0; text-align: justify;">
+        این صفحه گزیده‌ای از آخرین اخبار منتشرشده توسط منابع خبری معتبر ایرانی است و به‌صورت دسته‌بندی‌شده نمایش داده می‌شود. اطلاعات حدودا هر ۳۰ دقیقه یک‌بار به‌روزرسانی می‌شود و
+        منابعی مانند <strong>تسنیم</strong>، <strong>ایسنا</strong>، <strong>ایرنا</strong>، <strong>اقتصاد آنلاین</strong>، <strong>همشهری</strong> و <strong>باشگاه خبرنگاران جوان</strong> از جمله خبرگزاری‌هایی هستند که مطالب آن‌ها در این صفحه نمایش داده می‌شود.
+    </p>
+</div>
+</div> <!-- end of .container -->
+</body>
+</html>
+"""
+
+with open(output_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("✅ mobile version...")
