@@ -2,8 +2,9 @@ name: Update News HTML
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Every 30 minutes
+    - cron: '0 2-19 * * *'
   workflow_dispatch:
+
 
 jobs:
   build:
@@ -32,4 +33,3 @@ jobs:
         git add desktop.html mobile.html
         git diff --cached --quiet || git commit -m "🔄 Update news HTML files"
         git push
-
